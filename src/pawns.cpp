@@ -166,9 +166,9 @@ namespace {
                      + WeakLever * more_than_one(lever);
     }
 
-    // Double pawn evaluation if there are no non-pawn pieces
+    // Increase pawn evaluation if there are no non-pawn pieces
     if (pos.count<ALL_PIECES>(Us) == pos.count<PAWN>(Us))
-        score = score * 2;
+        score += score / 2;
 
     const Square* pl_shogi = pos.squares<SHOGI_PAWN>(Us);
 
