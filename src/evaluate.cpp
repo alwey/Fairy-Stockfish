@@ -79,6 +79,10 @@ namespace {
   constexpr Value LazyThreshold2  = Value(1300);
   constexpr Value SpaceThreshold = Value(12222);
 
+  int fmg = 100;
+  int feg = 400;
+  TUNE(SetRange(0,1200), fmg, SetRange(0,1200), feg, SetDefaultRange);
+
   // KingAttackWeights[PieceType] contains king attack weights by piece type
   constexpr int KingAttackWeights[PIECE_TYPE_NB] = { 0, 0, 81, 52, 44, 10, 40 };
 
@@ -496,7 +500,8 @@ namespace {
 
         // Reduce score if there is a deficit of gates
         if (pos.seirawan_gating() && !pos.piece_drops() && pos.count_in_hand(Us, ALL_PIECES) > popcount(pos.gates(Us)))
-            score -= make_score(200, 900) / pos.count_in_hand(Us, ALL_PIECES) * (pos.count_in_hand(Us, ALL_PIECES) - popcount(pos.gates(Us)));
+            score -= make_score(PieceValue[MG][pt] * fmg / 1000, PieceValue[EG][pt] * feg / 1000)
+                   / pos.count_in_hand(Us, ALL_PIECES) * (pos.count_in_hand(Us, ALL_PIECES) - popcount(pos.gates(Us)));
 
         if (pt == SHOGI_PAWN && !pos.shogi_doubled_pawn())
             score -= make_score(50, 20) * std::max(pos.count_with_hand(Us, SHOGI_PAWN) - pos.max_file() - 1, 0);
